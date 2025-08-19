@@ -48,8 +48,8 @@
 ###### **Warning and Disclaimer**
 
 * Use this script with caution.
-* Modifying system files can cause system instability.
-* The creator is not responsible for any damage caused by the use of this script.
+* It can cause system instability if you dont do it right.
+* I am not responsible for any damage caused by the use of this script.
 
 
 
@@ -65,4 +65,5 @@
 
 
 ##### **I was too lazy so i use AI to generate this readme.**
+
 
