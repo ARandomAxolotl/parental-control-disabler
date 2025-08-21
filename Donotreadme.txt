@@ -1,4 +1,4 @@
 Im learning how to use registry so you dont have to disabling wpcmonsvc(family control services) every time you boots up.
 Also, ill add parameter such as -a -b to quick.
 Finally, im understanding the windows registry value called PendingRenameOperation so you dont have to boot to winre(if u have admin)
-These are all the task im doing, plz ask in the "issue" and with tag
+These are all the task im doing, plz ask in the "issue" and with tag "idea"
