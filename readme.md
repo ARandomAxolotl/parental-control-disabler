@@ -32,7 +32,7 @@
 ##### **How the Script Works**
 
 * The script functions by renaming the executable files of the parental control programs, preventing them from launching normally.
-* Kaspersky Safe Kids: It renames safekids.exe to safekids1.exe and safekidsui.exe to safekidsui1.exe.
+* Kaspersky Safe Kids: It renames the entire kaspersky folder, preventing it from starting itself.
 * Unlocking the Command Prompt: It replaces the sethc.exe (Sticky Keys) file with cmd.exe. When you press the 
 * Shift key 5 or more times on the login screen, the Command Prompt will appear. This allows you to perform tasks such as:
 * Running services.msc to disable parental control services.
@@ -60,6 +60,7 @@
 
 
 ### **I was too lazy so i use AI to generate this readme.**
+
 
 
 
