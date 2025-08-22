@@ -50,7 +50,7 @@
 * /showreadme: Opens the README.md file in Notepad so you can read the instructions.
 * /on: Turns on debug mode. Use this as a second argument (e.g., script\_name.cmd /do /on).
 * /off: Turns off debug mode. Use this as a second argument (e.g., script\_name.cmd /do /off).
-* /help: Displays instructions and help on how to use the script.
+* No arguments : Displays instructions and help on how to use the script.
 
 
 
@@ -81,4 +81,5 @@
 * Unexpected Behavior: The script may fail to function as intended or cause other programs to malfunction.
 
 ###### **It is highly recommended that you back up all important data before running any system-level scripts.**
+
 
