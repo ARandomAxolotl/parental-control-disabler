@@ -6,7 +6,7 @@
 # --- Đọc cấu hình từ file config.txt ---
 $configPath = "config.txt"
 if (-not (Test-Path $configPath)) {
-    Write-Host "Lỗi: Không tìm thấy file config.txt. Vui lòng tạo file này và điền thông tin." -ForegroundColor Red
+    Write-Host "Unable to find config.txt, please reinstall or create it" -ForegroundColor Red
     exit
 }
 
@@ -30,7 +30,7 @@ $appPath = Get-Location
 function Check-For-Updates {
     # Kiểm tra tùy chọn tự động cập nhật
     if (-not $allowAutoUpdate) {
-        Write-Host "Auto update is disabler in the config.txt"
+        Write-Host "Auto update is disabled in the config.txt"
         return
     }
 
