@@ -30,30 +30,30 @@ $appPath = Get-Location
 function Check-For-Updates {
     # Kiểm tra tùy chọn tự động cập nhật
     if (-not $allowAutoUpdate) {
-        Write-Host "Tính năng tự động cập nhật đã bị tắt trong file cấu hình."
+        Write-Host "Auto update is disabler in the config.txt"
         return
     }
 
     # Kiểm tra kết nối internet
     if (-not $internetCheckingAllowed) {
-        Write-Host "Kết nối internet để kiểm tra cập nhật đã bị tắt trong file cấu hình."
+        Write-Host "Connect to the internet to start installing"
         return
     }
 
     try {
-        Write-Host "Đang kiểm tra cập nhật..."
+        Write-Host "Checking for updates..."
         
         # Thêm một bước kiểm tra kết nối internet đơn giản trước khi gọi API
         try {
             # Ping Google DNS để kiểm tra kết nối
             $pingResult = Test-Connection -ComputerName "8.8.8.8" -Count 1 -ErrorAction Stop | Select-Object -ExpandProperty StatusCode
             if ($pingResult -ne 0) {
-                Write-Host "Không có kết nối internet." -ForegroundColor Yellow
+                Write-Host "No Internet connection!" -ForegroundColor Yellow
                 return
             }
         }
         catch {
-            Write-Host "Không có kết nối internet." -ForegroundColor Yellow
+            Write-Host "No Internet connection, please try again later..." -ForegroundColor Yellow
             return
         }
 
@@ -101,16 +101,16 @@ function Check-For-Updates {
                 $downloadedFilePath = Join-Path $appPath $fileName
                 $extractPath = Join-Path $appPath "update_temp"
                 
-                Write-Host "Đang tải tệp $fileName..."
+                Write-Host "Downloading $fileName..."
                 Invoke-WebRequest -Uri $assetUrl -OutFile $downloadedFilePath
-                Write-Host "Tải xuống hoàn tất. Đang giải nén..."
+                Write-Host "Finished download, extracting"
                 
                 if (Test-Path $extractPath) {
                     Remove-Item $extractPath -Recurse -Force
                 }
                 Expand-Archive -Path $downloadedFilePath -DestinationPath $extractPath -Force
                 
-                Write-Host "Đang di chuyển tệp cập nhật..."
+                Write-Host "Moving files and folders..."
                 Get-ChildItem -Path $extractPath -Recurse -Force | ForEach-Object {
                     $destFile = $_.FullName -replace [regex]::Escape($extractPath), [regex]::Escape($appPath)
                     if ($_.PSIsContainer) {
@@ -120,18 +120,18 @@ function Check-For-Updates {
                     }
                 }
                 
-                Write-Host "Hoàn tất cập nhật. Đang dọn dẹp các tệp tạm..."
+                Write-Host "Finished update, cleaning up..."
                 Remove-Item $downloadedFilePath -Force
                 Remove-Item $extractPath -Recurse -Force
                 Write-Host "Cập nhật thành công!"
             } else {
-                Write-Host "Không tìm thấy tệp cập nhật phù hợp (tệp .zip)."
+                Write-Host "Can't find the download .zip file"
             }
         } else {
-            Write-Host "Bạn đang sử dụng phiên bản mới nhất ($currentVersion)."
+            Write-Host "You are using the newest verson : ($currentVersion)."
         }
     } catch {
-        Write-Host "Lỗi khi cập nhật: $_" -ForegroundColor Red
+        Write-Host "An error : $_" -ForegroundColor Red
     }
 }
 
