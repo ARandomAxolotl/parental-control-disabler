@@ -1,0 +1,83 @@
+HƯỚNG DẪN SỬ DỤNG SCRIPT
+TỔNG QUAN
+Script này được thiết kế để tạm thời vô hiệu hóa một số tính năng kiểm soát của phụ huynh trên Windows, cụ thể:
+
+Vô hiệu hóa tạm thời Kaspersky Safe Kids.
+
+Truy cập Command Prompt (CMD) từ màn hình đăng nhập để vô hiệu hóa Microsoft Family Safety hoặc cấp quyền quản trị.
+
+YÊU CẦU
+Script này phải được chạy trong Windows Recovery Environment (WinRE).
+
+CÁCH SỬ DỤNG
+Truy cập WinRE:
+
+Nhấn và giữ phím Shift rồi nhấp vào nút Restart (Khởi động lại) từ menu Start của Windows.
+
+Bạn sẽ được đưa đến màn hình tùy chọn khởi động nâng cao.
+
+Mở Command Prompt:
+
+Chọn Troubleshoot (Khắc phục sự cố) -> Advanced options (Tùy chọn nâng cao) -> Command Prompt.
+
+Xác định ổ đĩa Windows của bạn:
+
+Mở Notepad bằng lệnh notepad.
+
+Vào menu File -> Open.
+
+Duyệt qua các ổ đĩa để tìm ổ đĩa chứa thư mục Windows. Đây là ổ đĩa Windows của bạn.
+
+Lưu ý: Trong môi trường khôi phục, ổ đĩa Windows của bạn có thể không phải là C:.
+
+Chạy Script:
+
+Sau khi đã xác định được ổ đĩa Windows, bạn có thể chạy script này từ Command Prompt.
+
+Thay thế C: bằng ký tự ổ đĩa Windows của bạn.
+
+Gõ đường dẫn đầy đủ đến tệp script và nhấn Enter. Ví dụ: D:\\parental\_control\_disabler.cmd.
+
+TỔNG QUAN VỀ CÁC ĐỐI SỐ
+Dưới đây là các đối số dòng lệnh bạn có thể sử dụng với script này:
+
+/do: Thực thi các lệnh để vô hiệu hóa kiểm soát của phụ huynh.
+
+/undo: Hoàn tác tất cả các thay đổi đã thực hiện.
+
+/showreadme: Mở tệp README.md trong Notepad để bạn có thể đọc hướng dẫn.
+
+/on: Bật chế độ gỡ lỗi (debug mode). Sử dụng đối số này làm đối số thứ hai (ví dụ: script\_name.cmd /do /on).
+
+/off: Tắt chế độ gỡ lỗi. Sử dụng đối số này làm đối số thứ hai (ví dụ: script\_name.cmd /do /off).
+
+Không có đối số: Hiển thị hướng dẫn và trợ giúp về cách sử dụng script.
+
+CÁCH THỨC HOẠT ĐỘNG CỦA SCRIPT
+Vô hiệu hóa Kaspersky Safe Kids: Script đổi tên toàn bộ thư mục cài đặt của Kaspersky để ngăn ứng dụng khởi chạy.
+
+Mở khóa Command Prompt: Script thay thế tệp sethc.exe (Sticky Keys) bằng cmd.exe. Khi bạn nhấn phím Shift 5 lần hoặc nhiều hơn trên màn hình đăng nhập, Command Prompt sẽ xuất hiện. Điều này cho phép bạn:
+
+Chạy services.msc để vô hiệu hóa các dịch vụ kiểm soát của phụ huynh.
+
+Chạy netplwiz để cấp quyền quản trị.
+
+Hoàn tác các thay đổi: Script bao gồm các lệnh để hoàn tác tất cả các thay đổi, khôi phục tên tệp ban đầu và xóa tệp cmd.exe đã được sao chép.
+
+CẢNH BÁO & TUYÊN BỐ MIỄN TRỪ TRÁCH NHIỆM
+Hãy sử dụng script này một cách thận trọng. Nó có thể gây ra sự mất ổn định hệ thống nếu không được thực thi chính xác.
+
+Tôi không chịu trách nhiệm cho bất kỳ thiệt hại nào do việc sử dụng hoặc sửa đổi script này gây ra.
+
+CẢNH BÁO QUAN TRỌNG KHI SỬA ĐỔI SCRIPT
+Đây là một công cụ mạnh mẽ được thiết kế cho một mục đích cụ thể. Việc sửa đổi script này mà không hiểu biết đầy đủ về các tệp hệ thống của Windows và batch scripting có thể dẫn đến những hậu quả không lường trước, bao gồm:
+
+Mất ổn định hệ thống: Các lệnh không chính xác có thể làm hỏng các tệp hệ thống, khiến hệ điều hành của bạn không ổn định hoặc không thể khởi động được.
+
+Mất dữ liệu: Lỗi trong script có thể dẫn đến việc mất dữ liệu.
+
+Lỗ hổng bảo mật: Việc sửa đổi script không đúng cách có thể tạo ra các lỗ hổng bảo mật trên hệ thống của bạn.
+
+Hành vi không mong muốn: Script có thể không hoạt động như dự định hoặc gây ra sự cố cho các chương trình khác.
+
+Bạn nên sao lưu tất cả dữ liệu quan trọng trước khi chạy bất kỳ script cấp hệ thống nào.
