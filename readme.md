@@ -1,85 +1,107 @@
-###### **OVERVIEW**
+### **Parental Control Disabler Script**
 
-*This script is designed to temporarily disable certain parental control features on Windows. Specifically, it can:*
+##### **⚠️ SERIOUS WARNING ⚠️**
 
-*Temporarily disable Kaspersky Safe Kids.*
+This script is designed to modify core Windows system files and disable security software. Misuse can cause system instability or create severe security vulnerabilities.
 
-*Access the Command Prompt from the login screen to disable Microsoft Family Safety or grant administrative privileges.*
+* **DO NOT** run this script if you do not fully understand what it does.
+* The author is not responsible for any damage to your system.
 
+**Overview**
 
+This batch script is designed to disable (or re-enable) two parental control programs:
 
-###### **REQUIREMENTS**
+1. **Kaspersky Safe Kids**
+2. **Microsoft Family Safety**
 
-*This script must be run from the Windows Recovery Environment (WinRE).*
+It does this by renaming critical executable files and installation directories to prevent them from launching.
 
+### **‼️ MANDATORY REQUIREMENTS ‼️**
 
+1. **Windows Recovery Environment (WinRE):** This script **MUST** be run from the Windows Recovery Environment (WinRE). It will not work in a normal Windows session due to file-in-use and permission restrictions.
 
-###### **HOW TO USE**
+   * You can enter WinRE by holding Shift while clicking Restart from the Start menu, then navigating to Troubleshoot > Advanced options > Command Prompt.
 
-*Access WinRE:*
+2. **Administrator Privileges:** You need administrative rights. The command prompt in WinRE typically runs with SYSTEM privileges, which is sufficient.
+3. **Script Location:** It is recommended to place this script on a USB drive and run it from there within WinRE.
 
-* Hold the Shift key and click the Restart button from the Windows Start menu.
-* You will be taken to the advanced boot options screen.
+## **How to Use**
 
-*Open Command Prompt:*
+1. Save the parental\_control\_disabler.cmd file to a USB drive.
+2. Boot the target computer into **WinRE** and open the **Command Prompt**.
+3. In the Command Prompt, identify your drive letters. They may be different in WinRE (e.g., your Windows drive might be D: and your USB E:).
 
-* Select Troubleshoot -> Advanced options -> Command Prompt.
+   * You can use the diskpart command, followed by list volume, to see your drives.
 
-*Identify Your Windows Drive:*
+4. Navigate to your USB drive (e.g., E:).
+5. Run the script by typing its name:  
+   parental\_control\_disabler.cmd
 
-* Open Notepad with the notepad command.
-* Go to the File -> Open menu.
-* Browse the drives to find the one that contains the Windows folder. This is your Windows drive.
+#### **Usage Options**
 
-***Note: In the recovery environment, your Windows drive may not be C:.***
+##### **1. Interactive Menu (Recommended)**
 
-*Run the Script:*
+If you run the script with no arguments (parental\_control\_disabler.cmd), an interactive menu will appear:
 
-* Once you have identified your Windows drive, you can run this script from the Command Prompt.
-* Replace C: with your Windows drive letter.
-* Type the full path to the script file and press Enter. For example: D:\\parental\_control\_disabler.cmd.
+1. **Choose action:**
 
+   * 1 - (disable)
+   * 2 - (enable)
 
+2. **Choose target:**
 
-###### **OVERVIEW OF ARGUMENTS**
+   * 1 - (Kaspersky Safe Kids)
+   * 2 - (Microsoft Family Safety)
+   * 3 - (Both)
 
-*Here are the command-line arguments you can use with this script:*
+The script will perform the corresponding action based on your selections.
 
-* /do: Executes commands to disable parental controls.
-* /undo: Reverts all changes made.
-* /showreadme: Opens the README.md file in Notepad so you can read the instructions.
-* /on: Turns on debug mode. Use this as a second argument (e.g., script\_name.cmd /do /on).
-* /off: Turns off debug mode. Use this as a second argument (e.g., script\_name.cmd /do /off).
-* No arguments : Displays instructions and help on how to use the script.
+##### **2. Command-Line Arguments**
 
+You can also run the script with arguments to perform a specific action immediately:
 
+* --disablekaspersky: Disables Kaspersky Safe Kids.
+* --disablemicrosoftfamilysafely: Disables Microsoft Family Safety (and installs the sethc.exe backdoor).
+* --disableboth: Disables both.
+* --enablekaspersky: Re-enables Kaspersky Safe Kids.
+* --enablemicrosoftfamilysafely: Re-enables Microsoft Family Safety (and removes the sethc.exe backdoor).
+* --enableboth: Re-enables both.
+* --debugon: (Use as the second argument) Runs the script with debug mode (echo on).
 
-###### **HOW THE SCRIPT WORKS**
+**Example:**
 
-* Disabling Kaspersky Safe Kids: The script renames the entire Kaspersky installation folder to prevent the application from launching.
-* Unlocking the Command Prompt: The script replaces the sethc.exe (Sticky Keys) file with cmd.exe. When you press the Shift key 5 or more times on the login screen, the Command Prompt will appear. This allows you to:
-* Run services.msc to disable parental control services.
-* Run netplwiz to grant administrator privileges.
-* Reverting Changes: The script includes commands to undo all changes, restoring the original filenames and deleting the copied cmd.exe file.
+parental\_control\_disabler.cmd --disableboth
 
+parental\_control\_disabler.cmd "" --debugon
 
+parental\_control\_disabler.cmd --enableboth --debugon
 
-###### **WARNING \& DISCLAIMER**
+#### **Technical Details (What does this script do?)**
 
-* Use this script with caution. It can cause system instability if not executed correctly. 
-* I am not responsible for any damage caused by the use or modification of this script.
+##### **Disable Microsoft Family Safety (:domic)**
 
+1. Navigates to Windows\\System32.
+2. Renames wpcmon.exe (Windows Parental Controls Monitor) to wpcmon1.exe to disable it.
+3. Renames sethc.exe (the Sticky Keys program) to sethc1.exe.
+4. Copies cmd.exe (Command Prompt) and names it sethc.exe.
 
+   * **Consequence:** This creates a "backdoor." From the Windows login screen, pressing the Shift key 5 times will open a Command Prompt with SYSTEM privileges instead of Sticky Keys.
 
-###### **IMPORTANT WARNING FOR SCRIPT MODIFICATION**
+#### **Re-enable Microsoft Family Safety (:undomic)**
 
-*This is a powerful tool designed for a specific purpose. Modifying this script without a complete understanding of Windows system files and batch scripting can lead to unintended consequences, including:*
+1. Navigates to Windows\\System32.
+2. Deletes the copied sethc.exe (which is cmd.exe).
+3. Renames sethc1.exe back to sethc.exe (restoring Sticky Keys).
+4. Renames wpcmon1.exe back to wpcmon.exe (re-enabling monitoring).
 
-* System Instability: Incorrect commands can corrupt system files, making your operating system unstable or unbootable.
-* Data Loss: Errors in the script could potentially lead to data loss.
-* Security Vulnerabilities: Incorrectly modifying the script might create security loopholes on your system.
-* Unexpected Behavior: The script may fail to function as intended or cause other programs to malfunction.
+#### **Disable Kaspersky Safe Kids (:dokas)**
 
-###### **It is highly recommended that you back up all important data before running any system-level scripts.**
+1. Navigates to Program Files (x86)\\Kaspersky Lab\\.
+2. Renames the Kaspersky Safe Kids 23.0 directory to Kaspersky Fuck Kids.
 
+   * **Consequence:** The OS and Kaspersky services will be unable to find the program's executables, preventing it from launching.
 
+##### **Re-enable Kaspersky Safe Kids (:undokas)**
+
+1. Navigates to Program Files (x86)\\Kaspersky Lab\\.
+2. Renames the Kaspersky Fuck Kids directory back to Kaspersky Safe Kids 23.0.

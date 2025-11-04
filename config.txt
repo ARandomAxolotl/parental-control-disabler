@@ -1,7 +1,0 @@
-[Settings]
-GithubUser = ARabdomAxolotl
-GithubRepo = parental-control-disabler
-CurrentVersion = 1.0.2
-AllowSnapshots = False
-AllowAutoUpdate = True
-InternetCheckingAllowed = True
