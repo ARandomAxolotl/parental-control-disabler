@@ -1,7 +1,6 @@
 # Parental Control Disabler / Manager
 
 **⚠️ DISCLAIMER: USE AT YOUR OWN RISK.**
-This tool modifies system files and directories within Windows (`System32` and `Program Files`). Improper use may result in system instability. This project is for educational purposes.
 
 ## Overview
 
