@@ -1,107 +1,81 @@
-### **Parental Control Disabler Script**
+# Parental Control Disabler / Manager
 
-##### **⚠️ SERIOUS WARNING ⚠️**
+**⚠️ DISCLAIMER: USE AT YOUR OWN RISK.**
+This tool modifies system files and directories within Windows (`System32` and `Program Files`). Improper use may result in system instability. This project is for educational purposes.
 
-This script is designed to modify core Windows system files and disable security software. Misuse can cause system instability or create severe security vulnerabilities.
+## Overview
 
-* **DO NOT** run this script if you do not fully understand what it does.
-* The author is not responsible for any damage to your system.
+This project is a Batch script utility designed to manage (Disable, Enable, or Remove) specific parental control applications on Windows. [cite_start]It is specifically designed to run within the **Windows Recovery Environment (WinRE)** to bypass file locks and permissions that exist during a normal Windows session[cite: 1, 12].
 
-**Overview**
+The tool targets:
+1.  **Kaspersky Safe Kids**
+2.  **Microsoft Family Safety** (`wpcmon.exe`)
 
-This batch script is designed to disable (or re-enable) two parental control programs:
+## Project Structure
 
-1. **Kaspersky Safe Kids**
-2. **Microsoft Family Safety**
+* [cite_start]**`run.cmd`** [cite: 10]
+    * **The Main Launcher.** Run this file first.
+    * It allows you to choose between the original human-written script or the AI-debugged version.
+* [cite_start]**`parental_control_disabler(witten by me but debugged by AI).cmd`** [cite: 1]
+    * **Recommended.** A refined version of the script. It uses `choice` commands for better input handling, has cleaner logic, and improved error handling.
+* [cite_start]**`parental_control_disabler(witten by me).cmd`** [cite: 12]
+    * **Legacy.** The original human-written version of the script.
 
-It does this by renaming critical executable files and installation directories to prevent them from launching.
+## Features
 
-### **‼️ MANDATORY REQUIREMENTS ‼️**
+* [cite_start]**Session Detection:** Automatically detects if you are running in a normal Windows session and suggests rebooting into WinRE[cite: 1].
+* **Toggle Functionality:**
+    * [cite_start]**Disable:** Renames executable files/folders so the services cannot start (e.g., adds "rename" or changes `.exe` to `1.exe`)[cite: 7].
+    * [cite_start]**Enable:** Restores original filenames to re-enable the software[cite: 26].
+* [cite_start]**Removal:** Deletes the target folders/files completely (Not recommended as they may return after updates)[cite: 8].
+* [cite_start]**Configuration Persistence:** Saves your Windows drive letter to `config.txt` so you don't have to re-enter it every time[cite: 2, 8].
 
-1. **Windows Recovery Environment (WinRE):** This script **MUST** be run from the Windows Recovery Environment (WinRE). It will not work in a normal Windows session due to file-in-use and permission restrictions.
+## How to Use
 
-   * You can enter WinRE by holding Shift while clicking Restart from the Start menu, then navigating to Troubleshoot > Advanced options > Command Prompt.
+### 1. Boot into Windows Recovery Environment (WinRE)
+This script modifies system files that are locked while Windows is running. You must be in the Command Prompt of the Recovery Environment.
+1.  Hold **Shift** and press **Restart** in Windows.
+2.  Go to **Troubleshoot** > **Advanced Options** > **Command Prompt**.
 
-2. **Administrator Privileges:** You need administrative rights. The command prompt in WinRE typically runs with SYSTEM privileges, which is sufficient.
-3. **Script Location:** It is recommended to place this script on a USB drive and run it from there within WinRE.
+### 2. Running the Script
+1.  Navigate to the folder where these scripts are saved.
+2.  Run the launcher:
+    ```cmd
+    run.cmd
+    ```
+3.  [cite_start]Select which version of the script you want to run (AI-debugged is recommended)[cite: 11].
 
-## **How to Use**
+### 3. Configuration (Drive Letter)
+In WinRE, drive letters often change (e.g., your C: drive might show up as D:).
+* On the first run, the script will launch the **Configurator**.
+* It will open Notepad to help you check "This PC" and identify the correct drive letter containing the `Windows` folder.
+* [cite_start]Enter **only** the letter (e.g., `C` or `D`)[cite: 8].
 
-1. Save the parental\_control\_disabler.cmd file to a USB drive.
-2. Boot the target computer into **WinRE** and open the **Command Prompt**.
-3. In the Command Prompt, identify your drive letters. They may be different in WinRE (e.g., your Windows drive might be D: and your USB E:).
+### 4. Interactive Menu
+Follow the on-screen prompts to:
+1.  [cite_start]Select an Action: **Disable**, **Enable**, or **Remove**[cite: 5].
+2.  [cite_start]Select a Target: **Kaspersky**, **Microsoft Family**, or **Both**[cite: 5].
 
-   * You can use the diskpart command, followed by list volume, to see your drives.
+## Command Line Arguments (Advanced)
 
-4. Navigate to your USB drive (e.g., E:).
-5. Run the script by typing its name:  
-   parental\_control\_disabler.cmd
+[cite_start]You can bypass the menu by passing arguments directly to the script[cite: 3, 14].
 
-#### **Usage Options**
+**Syntax:** `script.cmd [ACTION] [TARGET] [--debugon]`
 
-##### **1. Interactive Menu (Recommended)**
-
-If you run the script with no arguments (parental\_control\_disabler.cmd), an interactive menu will appear:
-
-1. **Choose action:**
-
-   * 1 - (disable)
-   * 2 - (enable)
-
-2. **Choose target:**
-
-   * 1 - (Kaspersky Safe Kids)
-   * 2 - (Microsoft Family Safety)
-   * 3 - (Both)
-
-The script will perform the corresponding action based on your selections.
-
-##### **2. Command-Line Arguments**
-
-You can also run the script with arguments to perform a specific action immediately:
-
-* --disablekaspersky: Disables Kaspersky Safe Kids.
-* --disablemicrosoftfamilysafely: Disables Microsoft Family Safety (and installs the sethc.exe backdoor).
-* --disableboth: Disables both.
-* --enablekaspersky: Re-enables Kaspersky Safe Kids.
-* --enablemicrosoftfamilysafely: Re-enables Microsoft Family Safety (and removes the sethc.exe backdoor).
-* --enableboth: Re-enables both.
-* --debugon: (Use as the second argument) Runs the script with debug mode (echo on).
+| Flag | Description |
+| :--- | :--- |
+| **Actions** | |
+| `-d` | **Disable** parental controls. |
+| `-e` | **Enable** parental controls. |
+| `-r` | **Remove** parental controls (Destructive). |
+| **Targets** | |
+| `-m` | Target **Microsoft** Family Safety. |
+| `-k` | Target **Kaspersky** Safe Kids. |
+| `-b` | Target **Both**. |
+| **Debug** | |
+| `--debugon`| [cite_start]Enables verbose echo for debugging purposes[cite: 3]. |
 
 **Example:**
-
-parental\_control\_disabler.cmd --disableboth
-
-parental\_control\_disabler.cmd "" --debugon
-
-parental\_control\_disabler.cmd --enableboth --debugon
-
-#### **Technical Details (What does this script do?)**
-
-##### **Disable Microsoft Family Safety (:domic)**
-
-1. Navigates to Windows\\System32.
-2. Renames wpcmon.exe (Windows Parental Controls Monitor) to wpcmon1.exe to disable it.
-3. Renames sethc.exe (the Sticky Keys program) to sethc1.exe.
-4. Copies cmd.exe (Command Prompt) and names it sethc.exe.
-
-   * **Consequence:** This creates a "backdoor." From the Windows login screen, pressing the Shift key 5 times will open a Command Prompt with SYSTEM privileges instead of Sticky Keys.
-
-#### **Re-enable Microsoft Family Safety (:undomic)**
-
-1. Navigates to Windows\\System32.
-2. Deletes the copied sethc.exe (which is cmd.exe).
-3. Renames sethc1.exe back to sethc.exe (restoring Sticky Keys).
-4. Renames wpcmon1.exe back to wpcmon.exe (re-enabling monitoring).
-
-#### **Disable Kaspersky Safe Kids (:dokas)**
-
-1. Navigates to Program Files (x86)\\Kaspersky Lab\\.
-2. Renames the Kaspersky Safe Kids 23.0 directory to Kaspersky Fuck Kids.
-
-   * **Consequence:** The OS and Kaspersky services will be unable to find the program's executables, preventing it from launching.
-
-##### **Re-enable Kaspersky Safe Kids (:undokas)**
-
-1. Navigates to Program Files (x86)\\Kaspersky Lab\\.
-2. Renames the Kaspersky Fuck Kids directory back to Kaspersky Safe Kids 23.0.
+To disable Microsoft Family Safety immediately:
+```cmd
+"parental_control_disabler(witten by me but debugged by AI).cmd" -d -m
