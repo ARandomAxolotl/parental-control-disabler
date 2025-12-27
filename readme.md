@@ -4,7 +4,7 @@
 
 ## Overview
 
-This project is a Batch script utility designed to manage (Disable, Enable, or Remove) specific parental control applications on Windows. [cite_start]It is specifically designed to run within the **Windows Recovery Environment (WinRE)** to bypass file locks and permissions that exist during a normal Windows session.
+This project is a Batch script utility designed to manage (Disable, Enable, or Remove) specific parental control applications on Windows. It is specifically designed to run within the **Windows Recovery Environment (WinRE)** to bypass file locks and permissions that exist during a normal Windows session.
 
 The tool targets:
 1.  **Kaspersky Safe Kids**
