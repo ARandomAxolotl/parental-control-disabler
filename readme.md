@@ -5,7 +5,7 @@ This tool modifies system files and directories within Windows (`System32` and `
 
 ## Overview
 
-This project is a Batch script utility designed to manage (Disable, Enable, or Remove) specific parental control applications on Windows. [cite_start]It is specifically designed to run within the **Windows Recovery Environment (WinRE)** to bypass file locks and permissions that exist during a normal Windows session[cite: 1, 12].
+This project is a Batch script utility designed to manage (Disable, Enable, or Remove) specific parental control applications on Windows. [cite_start]It is specifically designed to run within the **Windows Recovery Environment (WinRE)** to bypass file locks and permissions that exist during a normal Windows session.
 
 The tool targets:
 1.  **Kaspersky Safe Kids**
@@ -13,22 +13,22 @@ The tool targets:
 
 ## Project Structure
 
-* [cite_start]**`run.cmd`** [cite: 10]
+* **`run.cmd`**
     * **The Main Launcher.** Run this file first.
     * It allows you to choose between the original human-written script or the AI-debugged version.
-* [cite_start]**`parental_control_disabler(witten by me but debugged by AI).cmd`** [cite: 1]
+* **`parental_control_disabler(witten by me but debugged by AI).cmd`**
     * **Recommended.** A refined version of the script. It uses `choice` commands for better input handling, has cleaner logic, and improved error handling.
-* [cite_start]**`parental_control_disabler(witten by me).cmd`** [cite: 12]
+* **`parental_control_disabler(witten by me).cmd`**
     * **Legacy.** The original human-written version of the script.
 
 ## Features
 
-* [cite_start]**Session Detection:** Automatically detects if you are running in a normal Windows session and suggests rebooting into WinRE[cite: 1].
+* **Session Detection:** Automatically detects if you are running in a normal Windows session and suggests rebooting into WinRE.
 * **Toggle Functionality:**
-    * [cite_start]**Disable:** Renames executable files/folders so the services cannot start (e.g., adds "rename" or changes `.exe` to `1.exe`)[cite: 7].
-    * [cite_start]**Enable:** Restores original filenames to re-enable the software[cite: 26].
-* [cite_start]**Removal:** Deletes the target folders/files completely (Not recommended as they may return after updates)[cite: 8].
-* [cite_start]**Configuration Persistence:** Saves your Windows drive letter to `config.txt` so you don't have to re-enter it every time[cite: 2, 8].
+    * **Disable:** Renames executable files/folders so the services cannot start (e.g., adds "rename" or changes `.exe` to `1.exe`).
+    * **Enable:** Restores original filenames to re-enable the software.
+* **Removal:** Deletes the target folders/files completely (Not recommended as they may return after updates).
+* **Configuration Persistence:** Saves your Windows drive letter to `config.txt` so you don't have to re-enter it every time.
 
 ## How to Use
 
@@ -43,18 +43,18 @@ This script modifies system files that are locked while Windows is running. You 
     ```cmd
     run.cmd
     ```
-3.  [cite_start]Select which version of the script you want to run (AI-debugged is recommended)[cite: 11].
+3.  Select which version of the script you want to run (AI-debugged is recommended).
 
 ### 3. Configuration (Drive Letter)
 In WinRE, drive letters often change (e.g., your C: drive might show up as D:).
 * On the first run, the script will launch the **Configurator**.
 * It will open Notepad to help you check "This PC" and identify the correct drive letter containing the `Windows` folder.
-* [cite_start]Enter **only** the letter (e.g., `C` or `D`)[cite: 8].
+* Enter **only** the letter (e.g., `C` or `D`).
 
 ### 4. Interactive Menu
 Follow the on-screen prompts to:
-1.  [cite_start]Select an Action: **Disable**, **Enable**, or **Remove**[cite: 5].
-2.  [cite_start]Select a Target: **Kaspersky**, **Microsoft Family**, or **Both**[cite: 5].
+1.  Select an Action: **Disable**, **Enable**, or **Remove**.
+2.  Select a Target: **Kaspersky**, **Microsoft Family**, or **Both**.
 
 ## Command Line Arguments (Advanced)
 
@@ -73,7 +73,7 @@ Follow the on-screen prompts to:
 | `-k` | Target **Kaspersky** Safe Kids. |
 | `-b` | Target **Both**. |
 | **Debug** | |
-| `--debugon`| [cite_start]Enables verbose echo for debugging purposes[cite: 3]. |
+| `--debugon`| Enables verbose echo for debugging purposes. |
 
 **Example:**
 To disable Microsoft Family Safety immediately:
