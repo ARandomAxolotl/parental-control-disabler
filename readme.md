@@ -73,8 +73,6 @@ Follow the on-screen prompts to:
 | `-b` | Target **Both**. |
 | **Debug** | |
 | `--debugon`| Enables verbose echo for debugging purposes. |
-
-**Example:**
 To disable Microsoft Family Safety immediately:
 ```cmd
 "parental_control_disabler(witten by me but debugged by AI).cmd" -d -m
