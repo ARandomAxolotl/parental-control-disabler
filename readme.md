@@ -1,78 +1,53 @@
-# Parental Control Disabler / Manager
+# Parental Control Disabler
 
-**⚠️ DISCLAIMER: USE AT YOUR OWN RISK.**
+A batch script designed to Disable, Enable, or Remove parental control software (Kaspersky Safe Kids and Microsoft Family Safety) from Windows installations.
 
-## Overview
-
-This project is a Batch script utility designed to manage (Disable, Enable, or Remove) specific parental control applications on Windows. It is specifically designed to run within the **Windows Recovery Environment (WinRE)** to bypass file locks and permissions that exist during a normal Windows session.
-
-The tool targets:
-1.  **Kaspersky Safe Kids**
-2.  **Microsoft Family Safety** (`wpcmon.exe`)
-
-## Project Structure
-
-* **`run.cmd`**
-    * **The Main Launcher.** Run this file first.
-    * It allows you to choose between the original human-written script or the AI-debugged version.
-* **`parental_control_disabler(witten by me but debugged by AI).cmd`**
-    * **Recommended.** A refined version of the script. It uses `choice` commands for better input handling, has cleaner logic, and improved error handling.
-* **`parental_control_disabler(witten by me).cmd`**
-    * **Legacy.** The original human-written version of the script.
+> \*\*WARNING:\*\* This script is optimized to run in the \*\*Windows Recovery Environment (WinRE)\*\*. Running in a standard session is not recommended.
 
 ## Features
 
-* **Session Detection:** Automatically detects if you are running in a normal Windows session and suggests rebooting into WinRE.
-* **Toggle Functionality:**
-    * **Disable:** Renames executable files/folders so the services cannot start (e.g., adds "rename" or changes `.exe` to `1.exe`).
-    * **Enable:** Restores original filenames to re-enable the software.
-* **Removal:** Deletes the target folders/files completely (Not recommended as they may return after updates).
-* **Configuration Persistence:** Saves your Windows drive letter to `config.txt` so you don't have to re-enter it every time.
+* **Targeted Actions:** Disable, Enable, or Remove Kaspersky Safe Kids and Microsoft Family Safety\[cite: 19].
+* **Drive Auto-Detection:** Automatically scans drives (C-Z), identifies Windows partitions via labels, and lets you select the target drive.
+* **Safety First:** Implements a "rename" strategy for disabling files rather than deleting them, allowing for easy restoration.
 
-## How to Use
+## Usage
 
-### 1. Boot into Windows Recovery Environment (WinRE)
-This script modifies system files that are locked while Windows is running. You must be in the Command Prompt of the Recovery Environment.
-1.  Hold **Shift** and press **Restart** in Windows.
-2.  Go to **Troubleshoot** > **Advanced Options** > **Command Prompt**.
+### Method 1: Interactive Menu (Recommended)
 
-### 2. Running the Script
-1.  Navigate to the folder where these scripts are saved.
-2.  Run the launcher:
-    ```cmd
-    run.cmd
-    ```
-3.  Select which version of the script you want to run (AI-debugged is recommended).
+1. Boot into WinRE (Command Prompt).
+2. Run the script: `parental\_control\_disabler.cmd`
+3. **Configurator:** If `config.txt` is missing, the script will auto-scan your drives. Enter the number corresponding to your Windows drive.
+4. **Select Option:**
 
-### 3. Configuration (Drive Letter)
-In WinRE, drive letters often change (e.g., your C: drive might show up as D:).
-* On the first run, the script will launch the **Configurator**.
-* It will open Notepad to help you check "This PC" and identify the correct drive letter containing the `Windows` folder.
-* Enter **only** the letter (e.g., `C` or `D`).
+   * `1` - Disable (Renames files)
+   * `2` - Enable (Restores filenames)
+   * `3` - Remove (Deletes files - **Double Warning protection**)
 
-### 4. Interactive Menu
-Follow the on-screen prompts to:
-1.  Select an Action: **Disable**, **Enable**, or **Remove**.
-2.  Select a Target: **Kaspersky**, **Microsoft Family**, or **Both**.
+### Method 2: Command Line Arguments
 
-## Command Line Arguments (Advanced)
-
-[cite_start]You can bypass the menu by passing arguments directly to the script[cite: 3, 14].
-
-**Syntax:** `script.cmd [ACTION] [TARGET] [--debugon]`
+Run the script with flags to bypass the menu:
+`parental\_control\_disabler.cmd \[ACTION] \[TARGET] \[DEBUG]`
 
 | Flag | Description |
 | :--- | :--- |
-| **Actions** | |
-| `-d` | **Disable** parental controls. |
-| `-e` | **Enable** parental controls. |
-| `-r` | **Remove** parental controls (Destructive). |
-| **Targets** | |
-| `-m` | Target **Microsoft** Family Safety. |
-| `-k` | Target **Kaspersky** Safe Kids. |
-| `-b` | Target **Both**. |
-| **Debug** | |
-| `--debugon`| Enables verbose echo for debugging purposes. |
-To disable Microsoft Family Safety immediately:
-```cmd
-"parental_control_disabler(witten by me but debugged by AI).cmd" -d -m
+| \*\*-d\*\* | Disable services |
+| \*\*-e\*\* | Enable services |
+| \*\*-r\*\* | Remove services |
+| \*\*-k\*\* | Target: Kaspersky Safe Kids |
+| \*\*-m\*\* | Target: Microsoft Family Safety |
+| \*\*-b\*\* | Target: Both |
+
+**Debug Mode:**
+Add `-d` as the third argument (e.g., `cmd -d -b -d`) to enable verbose output.
+
+## Configuration
+
+The script stores your selected Windows drive letter in `config.txt`.
+
+* Lines starting with `#` are ignored.
+* Format: `windirtoo=\[DriveLetter]`
+
+## Disclaimer
+
+* **Removal Risks:** Option 3 (Remove) permanently deletes files. This is not recommended. The script will warn you twice before proceeding.
+* **Microsoft Family Safety:** This service may automatically reinstall itself after Windows Updates.
