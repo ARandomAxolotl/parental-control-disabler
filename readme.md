@@ -42,7 +42,7 @@ You can bypass the menus by providing arguments in the following format:
 | \*\*Debug\*\* | `--verbose`(print everything) or `-d`(print the needed(reccommend)) |
 
 **Example:**
-`parental\_control\_disabler.cmd -d -b` (Disables both services)
+`parental_control_disabler.cmd -d -b` (Disables both services)
 ---
 
 ## ⚠️ Important Safety Notes
