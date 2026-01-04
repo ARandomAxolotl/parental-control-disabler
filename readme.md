@@ -1,6 +1,6 @@
 # Parental Control Disabler
 
-This batch script is designed to **Disable**, **Enable**, or **Remove** parental control software—specifically **Kaspersky Safe Kids** and **Microsoft Family Safety**\[cite: 13, 14]. It operates by renaming or deleting core system files on a target Windows partition.
+This batch script is designed to **Disable**, **Enable**, or **Remove** parental control software—specifically **Kaspersky Safe Kids** and **Microsoft Family Safety**. It operates by renaming or deleting core system files on a target Windows partition.
 
 > \[!WARNING]
 > This script is intended to run in the \*\*Windows Recovery Environment (WinRE)\*\*. Running it within a normal Windows session may cause permission issues or fail to target the correct system files.
