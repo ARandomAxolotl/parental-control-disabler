@@ -55,5 +55,5 @@ You can bypass the menus by providing arguments in the following format:
 
 ## 📂 File Structure
 
-* `parental\_control\_disabler.cmd`: The main execution script.
+* `parental_control_disabler.cmd`: The main execution script.
 * `config.txt`: Generated file storing the targeted Windows drive (`windirtoo`).
