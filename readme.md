@@ -36,14 +36,13 @@ You can bypass the menus by providing arguments in the following format:
 
 | Argument | Description | \[cite] |
 | :--- | :--- | :--- |
-| \*\*Options\*\* | `-d` (Disable), `-e` (Enable), `-r` (Remove) |  |
+| \*\*Options\*\* | `-d` (Disable), `-e` (Enable), `-r` (Remove), `-h` or `--help`(show the help message) |
 | \*\*Targets\*\* | `-m` (Microsoft), `-k` (Kaspersky), `-b` (Both) |
-| \*\*Flags\*\* | `--no-preserve` (Skip removal warnings), `--skip-check-environment` |
-| \*\*Debug\*\* | `--verbose` or `-d` |
+| \*\*Flags\*\* | `--no-preserve` (Skip removal warnings), `--skip-check-environment` (You can run it in normal Windows environment |
+| \*\*Debug\*\* | `--verbose`(print everything) or `-d`(print the needed(reccommend)) |
 
 **Example:**
 `parental\_control\_disabler.cmd -d -b` (Disables both services)
-
 ---
 
 ## ⚠️ Important Safety Notes
