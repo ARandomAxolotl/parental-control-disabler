@@ -2,7 +2,10 @@
 :: Initialize environment and set code page to UTF-8
 SETLOCAL ENABLEDELAYEDEXPANSION
 chcp 65001 >nul 
-
+set CurrentVersion=1
+echo #################################### >nul
+echo CHANGE THIS VERSION INFO AFTER AN UPDATE >nul
+echo #################################### >nul
 :: Capture the Escape character for potential coloring
 for /f %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 
@@ -11,30 +14,21 @@ for /f %%a in ('echo prompt $E ^| cmd') do set "ESC=%%a"
 :: -----------------------------------------------------------------
 :: Check for debug flag (-d) immediately.
 :: Note: The original logic checks the 3rd argument for the debug flag.
-if "%5" == "--verbose" (
-    @echo on
-    set debug=true
-) else (
-	if "%5" == "-d" (
-		set debug=maybe
-	) else (
-		set debug=nottrue
-	)
-)
+:: Default value
+set debug=nottrue
 
-if "%4" == "--verbose" (
-    @echo on
-    set debug=true
-) else (
-	if "%4" == "-d" (
-		set debug=maybe
-	) else (
-		set debug=nottrue
-	)
-)
+:: Check Argument 4
+if "%~4"=="--verbose" (@echo on & set debug=true)
+if "%~4"=="-d" (set debug=maybe)
+if "%~4"=="--debug"   (set debug=maybe)
+
+:: Check Argument 5
+if "%~5"=="--verbose" (@echo on & set debug=true)
+if "%~5"=="-d"  (set debug=maybe)
+if "%~5"=="--debug"   (set debug=maybe)
 
 :: -----------------------------------------------------------------
-:: SECTION 2: ENVIRONMENT CHECK
+:: SECTION 2: ENVIRONMENT CHECK(and update)
 :: -----------------------------------------------------------------
 :: Checks if explorer.exe is running.
 :CheckEnvironment
@@ -44,16 +38,20 @@ if "%1" == "--skip-check-environment" ( goto :LoadConfig )
 if "%3" == "--skip-check-environment" ( goto :LoadConfig )
 if "%4" == "--skip-check-environment" ( goto :LoadConfig )
 IF !errorlevel! == 0 (
-    echo It seems like you're in the normal windows session.
-    echo This script is intended to run in WinRE.
-    
-    SET /P restartqueue="Wanna restart to winre? (Y/N) : "
-    if /I "!restartqueue!" == "Y" (
-        :: Restart to recovery options
-        shutdown /r /o /t 00
+    echo Because u are running script in the normal Windows session so I'm now checking for update
+    echo Checking internet connection...
+    ping -n 1 www.github.com | find "TTL=" >nul
+    if %errorlevel%==0 (
+         echo You are online!
+         echo Getting newest version info...
+         for /f "usebackq delims=" %%b in (`curl -sL "https://raw.githubusercontent.com/ARandomAxolotl/parental-control-disabler/refs/heads/main/ver.txt"`) do (
+             set "newVersion=%%b"
+             goto :CheckUpdate
+         )
     ) else (
-        echo You have to do it manually!
-        goto :Finish
+         echo You are offline.
+         echo Stopping
+         goto :Finish
     )
 )
 :: If explorer isn't running, flow triggers to Config Loading
@@ -61,8 +59,8 @@ IF !errorlevel! == 0 (
 :: -----------------------------------------------------------------
 :: SECTION 3: CONFIGURATION
 :: -----------------------------------------------------------------
+:: Define the path to the config file
 :LoadConfig
-:: Define the path to your config file
 set "CONFIG_FILE=config.txt"
 if NOT "%debug%"=="nottrue" echo [DEBUG] Checking if the config file exist...
 :: Check if the config file exists
@@ -94,7 +92,7 @@ goto :ParseOptions
 :: -----------------------------------------------------------------
 :Configurator
 echo ╭─────────────────────────────────╮
-echo │ Parental control disable script │
+echo ^│ Parental control disable script                     ^│
 echo ╰─────────────────────────────────╯
 if NOT "%debug%"=="nottrue" echo [DEBUG] Finding Windows installations...
 
@@ -127,7 +125,9 @@ set /p choice="Enter the number of the drive you want to work with (1-%count%):
 set "selectedDrive=!drive[%choice%]!"
 
 :: 2. Write to config.txt (This overwrites existing file)
-echo windirtoo=%selectedDrive% > config.txt
+choice /c YNE /M "Do you want to write to config?"
+if "%errorlevel%"=="3" goto :Finish
+if "%errorlevel%"=="1" echo windirtoo=%selectedDrive% > config.txt
 :: Loop back to load the config once generated or selected
 goto :LoadConfig
 
@@ -167,7 +167,7 @@ goto :Execute
 :: -----------------------------------------------------------------
 :StartTUI
 echo ╭─────────────────────────────────╮
-echo │ Parental control disable script │
+echo ^│ Parental control disable script                    ^ │
 echo ╰─────────────────────────────────╯
 echo What do u want to do?
 echo 1 - (Disable)
@@ -178,9 +178,6 @@ if NOT "%debug%"=="nottrue" echo [DEBUG] Option selected : %opt%
 goto :SelectTarget
 
 :SelectTarget
-echo ╭─────────────────────────────────╮
-echo │ Parental control disable script │
-echo ╰─────────────────────────────────╯
 echo Select target : 
 echo 1 - (Kaspersky Safe Kids)
 echo 2 - (Microsoft Family Safety)
@@ -194,7 +191,7 @@ goto :Execute
 :: -----------------------------------------------------------------
 :Execute
 echo ╭─────────────────────────────────╮
-echo │        Executing......          │
+echo ^│        Executing......                                          ^│
 echo ╰─────────────────────────────────╯
 if NOT "%debug%"=="nottrue" echo [DEBUG] Starting execution prase...
 :: Check for Removal Option (High Risk)
@@ -333,20 +330,20 @@ echo.
 echo Usage: %~nx0 [options/flags2] [target] [flag/flags2/debug flag] [debug flag]
 echo.
 echo Options:
-echo   -h, --help        			Show this help message
-echo   -d                			Disable
-echo   -e                			Enable
+echo   -h, --help        				Show this help message
+echo   -d                				Disable
+echo   -e                				Enable
 echo Targets:
-echo    -m               			Microsoft Faminily Safely
-echo    -k               			Kaspersky safe kids
-echo    -b              			Both
+echo    -m               				Microsoft Faminily Safely
+echo    -k               				Kaspersky safe kids
+echo    -b              					Both
 echo Flags:
-echo   --no-preserve   				Do not show 2-step-verification during removal
+echo   --no-preserve   			Skip the 2-step-verification during removal
 echo Flags2:
 echo   --skip-check-environment     Skip the check environment prase
 echo Debug flag :
 echo   --verbose					Verbose mode, print everything(can be messy)
-echo   -d							Debug mode, print most infomation
+echo   -d						Debug mode, print most infomation
 echo Tip : You can use "" as an empty argument
 goto :Finish
 
@@ -361,3 +358,21 @@ echo Bye Bye
 echo Hope ur parents dont find me
 echo on
 goto :eof
+
+:: Bonus : update
+:CheckUpdate
+if /i %newVersion% gtr %CurrentVersion% (
+cd ..
+curl -sL https://codeload.github.com/ARandomAxolotl/parental-control-disabler/zip/refs/heads/main
+powershell -command "Expand-Archive -Path 'parental-control-disabler-main.zip' -DestinationPath '.' -Force"
+)
+echo This script is intended to run in WinRE.
+    
+set /P restartqueue="Wanna restart to winre? (Y/N) : "
+if /I "!restartqueue!" == "Y" (
+    :: Restart to recovery options
+    shutdown /r /o /t 00
+) else (
+    echo You have to do it manually!
+    goto :Finish
+)

@@ -13,6 +13,7 @@ This batch script is designed to **Disable**, **Enable**, or **Remove** parental
 * **Multi-Software Support**: Works with Kaspersky Safe Kids 23.0 and Microsoft Family Safety (`wpcmon.exe`).
 * **Automatic Configuration**: Scans all available drives (C-Z) to locate your Windows installation.
 * **CLI \& TUI Support**: Use command-line arguments for automation or a text-based menu for manual use.
+* **Update**: Update the script for fixing bugs.
 
 ---
 
