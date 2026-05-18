@@ -1,4 +1,5 @@
-if %debug% gtr 0 echo [DEBUG] Checking the environment...
+if %Debuglevel% gtr 0 echo [DEBUG] Checking the environment...
+set "winpe=True"
 tasklist /FI "imagename eq explorer.exe" | find "explorer.exe" >nul
 IF !errorlevel! == 0 (
     echo Because u are running script in the normal Windows session so I'm now checking for update
@@ -16,6 +17,7 @@ IF !errorlevel! == 0 (
          echo Stopping
     )
     exit /b 1
+    set "winpe=False"
 )
 exit /b 0
 

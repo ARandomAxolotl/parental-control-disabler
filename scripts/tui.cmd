@@ -7,7 +7,7 @@ echo 2 - (Enable)
 echo 3 - (Stop)
 echo 4 - (Remove)
 set /p opt=Enter option: 
-if %debug% gtr 0 echo [DEBUG] Option selected : %opt%
+if %Debuglevel% gtr 0 echo [DEBUG] Option selected : %opt%
 if "%opt%"=="2" (
     set "cmd=--enable"
 ) else if "%opt%"=="1" (
@@ -23,12 +23,16 @@ echo Select Target :
 echo 1 - (Kaspersky Safe Kids)
 echo 2 - (Microsoft Family Safety)
 echo 3 - (Both)
-set /p Target=Enter target: 
-if %debug% gtr 0 echo [DEBUG] Target selected : %Target%
+set /p target=Enter target: 
+if %Debuglevel% gtr 0 echo [DEBUG] Target selected : %Target%
 if "%Target%"=="1" (
-    set "cmd=%cmd% --Target=ms"
+    set "cmd=%cmd% --target:kas"
 ) else if "%Target%"=="2" (
-    set "cmd=%cmd% --Target=kas"
+    set "cmd=%cmd% --target:ms"
 ) else if "%Target%"=="3" (
-    set "cmd=%cmd% --Target=both"
+    set "cmd=%cmd% --target:both"
 )
+
+call .\scripts\config.cmd
+
+call .\scripts\exec.cmd %cmd%
